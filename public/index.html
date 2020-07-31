@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bens-todo</title>
+    <!-- Bootstrap-->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Firebase code-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAJ9g_J3ObWFvs1JGBdtiM8bW7NGt6QHJE",
+        authDomain: "bens-todo.firebaseapp.com",
+        databaseURL: "https://bens-todo.firebaseio.com",
+        projectId: "bens-todo",
+        storageBucket: "bens-todo.appspot.com",
+        messagingSenderId: "391777225937",
+        appId: "1:391777225937:web:37d98f78ac2cead0a709f0",
+        measurementId: "G-DQV6YEF9NQ",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+    <script src="app.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"
+      integrity="sha512-/seDHxVfh1NvFUscAj8GsHQVZJvr2jjAoYsNL7As2FCaFHUHYIarl3sRCvVlFgyouVNiRgHIebyLKjpgd1SLDw=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"
+      integrity="sha512-/seDHxVfh1NvFUscAj8GsHQVZJvr2jjAoYsNL7As2FCaFHUHYIarl3sRCvVlFgyouVNiRgHIebyLKjpgd1SLDw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+   <!-- Image and text -->
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="https://cdn.shopify.com/s/files/1/1061/1924/files/Turtle_Iphone_Emoji_JPG.png?12913140708551526203" width="30" height="30" class="d-inline-block align-top" alt="turtle emoji" loading="lazy">
+    Ben's awesome to do app
+  </a>
+  <div id="userDetails"></div>
+</nav>
+    <section id="whenSignedOut">
+      <button id="signInBtn" class="btn btn-primary">
+        Sign in with Google
+      </button>
+    </section>
+    <section id="whenSignedIn" hidden="true">
+      <div id="userName"></div>
+      <section>
+        <ul id="thingsList"></ul>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModal"
+        >
+          New Task
+        </button>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New task</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p><b>Write your task below:</b></p>
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Task:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputPassword" placeholder="todo...">
+                    </div>
+              </div>
+              <div class="form-group row">
+                <label for="choseColor" class="col-sm-2 col-form-label">Color:</label>
+                <div class="col-sm-10">
+                    <select name="color" id="colorSelector">
+                      <option value="Black">Black</option>
+                        <option value="Red">Red</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Orange">Orange</option>
+                    </select>
+                </div>
+          </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id='taskConfirm'>
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <button id="signOutBtn" class="btn btn-secondary">Sign out</button>
+    </section>
+  </body>
+</html>
